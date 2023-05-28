@@ -38,10 +38,11 @@ interface Show {
 
 const AllTvShows: React.FC = () => {
   const [shows, setShows] = useState<Show[]>([]);
+  const [extraData, setExtraData] = useState<Show[]>([]);
 
   async function fetchData() {
     try {
-      const response = await axios.get(" https://api.tvmaze.com/shows");
+      const response = await axios.get("https://api.tvmaze.com/shows");
       const data = response.data;
       console.log(data);
       if (data !== undefined) {
@@ -58,20 +59,22 @@ const AllTvShows: React.FC = () => {
 
   return (
     <>
-      <Search />
-      <IonContent>
-        <IonGrid className="ion-align-items-center ion-justify-content-center ion-text-center">
-          <IonRow>
-            {shows && Array.isArray(shows)
-              ? shows.map((show) => (
-                  <IonCol size="12" size-md="6" key={show.id}>
-                    <ShowCard show={show} />
-                  </IonCol>
-                ))
-              : null}
-          </IonRow>
-        </IonGrid>
-      </IonContent>
+      <IonPage>
+        <Search />
+        <IonContent>
+          <IonGrid className="ion-align-items-center ion-justify-content-center ion-text-center">
+            <IonRow>
+              {shows && Array.isArray(shows)
+                ? shows.map((show) => (
+                    <IonCol size="12" size-md="6" key={show.id}>
+                      <ShowCard show={show} />
+                    </IonCol>
+                  ))
+                : null}
+            </IonRow>
+          </IonGrid>
+        </IonContent>
+      </IonPage>
     </>
   );
 };

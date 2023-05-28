@@ -39,38 +39,46 @@ interface Show {
 
 const ShowCard: React.FC<{ show: Show }> = ({ show }) => {
   return (
-    <IonCard key={show.id}>
-      {show.image && show.image.medium && (
-        <>
-          <IonImg src={show.image.medium} alt={show.name} />
-          <IonCardHeader>
-            <IonCardTitle>{show.name}</IonCardTitle>
-            <IonRow className="ion-align-items-center">
-              <IonCol>
-                <p>
-                  <IonIcon icon={star} style={{ paddingRight: 5 }} />
-                  {show.rating.average ? show.rating.average : "Undefined"}
-                </p>
-              </IonCol>
-              <IonCol>{`${show.runtime} min`}</IonCol>
-              <IonCol>{show.status}</IonCol>
-            </IonRow>
-            <p>{show.genres.join(", ")}</p>
-            <p
-              dangerouslySetInnerHTML={{
-                __html:
-                  show.summary.length > 200
-                    ? show.summary.slice(0, 200) + "..."
-                    : show.summary,
-              }}
-            />
-          </IonCardHeader>
-          <IonCardContent>
-            {/* Other details can be included here */}
-          </IonCardContent>
-        </>
-      )}
-    </IonCard>
+    <>
+      <IonCard
+        key={show.id}
+        button
+        routerLink={`/shows/${show.id}/episodes`}
+        style={{ fontSize: 20 }}
+      >
+        {show.image && show.image.medium && (
+          <>
+            <IonImg src={show.image.medium} alt={show.name} />
+            <IonCardHeader>
+              <IonCardTitle>{show.name}</IonCardTitle>
+              <IonRow className="ion-align-items-center">
+                <IonCol>
+                  <p>
+                    <IonIcon icon={star} style={{ paddingRight: 5 }} />
+                    {show.rating.average ? show.rating.average : "Undefined"}
+                  </p>
+                </IonCol>
+                <IonCol>{`${show.runtime} min`}</IonCol>
+                <IonCol>{show.status}</IonCol>
+              </IonRow>
+              <p>{show.genres.join(", ")}</p>
+              <p
+                className="ion-no-margin"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    show.summary.length > 150
+                      ? show.summary.slice(0, 140) + "..."
+                      : show.summary,
+                }}
+              />
+            </IonCardHeader>
+            <IonCardContent>
+              {/* Other details can be included here */}
+            </IonCardContent>
+          </>
+        )}
+      </IonCard>
+    </>
   );
 };
 

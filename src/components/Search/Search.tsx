@@ -16,6 +16,7 @@ interface SearchResult {
     image: {
       medium: string;
     };
+    id: number;
   };
 }
 
@@ -49,14 +50,14 @@ function Search() {
       <IonSearchbar
         value={input}
         placeholder="Search for shows..."
-        className="custom-searchbar"
+        className="ion-no-padding"
         onIonInput={handleSearch}
         debounce={500}
       ></IonSearchbar>
-      <IonList>
+      <IonList className="ion-no-padding">
         {shows.map((searchResult: SearchResult, index: number) => (
           <div key={index}>
-            <IonItem>
+            <IonItem routerLink={`/shows/${searchResult.show.id}/episodes`}>
               {searchResult.show.image && (
                 <img
                   src={searchResult.show.image.medium}

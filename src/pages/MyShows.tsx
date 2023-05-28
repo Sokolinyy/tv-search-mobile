@@ -5,22 +5,13 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import Search from "../components/Search/Search";
 
 const MyShows: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle> 3</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Hello</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-      </IonContent>
+      <Search />
+      <IonContent></IonContent>
     </IonPage>
   );
 };
