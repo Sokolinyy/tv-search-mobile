@@ -1,5 +1,6 @@
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
   IonCol,
   IonContent,
@@ -19,6 +20,7 @@ import Search from "./Search/Search";
 import { star } from "ionicons/icons";
 import styles from "./ShowDetail.module.scss";
 import EpisodesInfo from "./EpisodesInfo";
+import { Preferences } from "@capacitor/preferences";
 
 interface Show {
   id: number;
@@ -61,6 +63,18 @@ const ShowDetails: React.FC = () => {
     return <IonPage>Loading...</IonPage>;
   }
 
+  const saveShow = async () => {
+    // Get the existing shows
+    const { value } = await Preferences.get({ key: "myShows" });
+    const existingShows = value ? JSON.parse(value) : [];
+
+    // Add the new show
+    const newShows = [...existingShows, showData];
+
+    // Save the updated shows
+    await Preferences.set({ key: "myShows", value: JSON.stringify(newShows) });
+  };
+
   return (
     <>
       <IonPage>
@@ -90,6 +104,12 @@ const ShowDetails: React.FC = () => {
           <p className={`ion-text-center ${styles.genre}`}>
             {showData.genres.join(", ")}
           </p>
+          <IonButton
+            style={{ display: "block", margin: "auto" }}
+            onClick={saveShow}
+          >
+            Add to My shows
+          </IonButton>
           <p
             dangerouslySetInnerHTML={{
               __html: showData.summary,

@@ -37,7 +37,7 @@ function Search() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, 500); // Set delay of 500ms
+  }); // Set delay of 500ms
 
   const handleSearch = (event: CustomEvent) => {
     const value = event.detail.value;
@@ -52,7 +52,6 @@ function Search() {
         placeholder="Search for shows..."
         className="ion-no-padding"
         onIonInput={handleSearch}
-        debounce={500}
       ></IonSearchbar>
       <IonList className="ion-no-padding">
         {shows.map((searchResult: SearchResult, index: number) => (

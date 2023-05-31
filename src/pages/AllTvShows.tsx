@@ -14,6 +14,10 @@ import Search from "../components/Search/Search";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ShowCard from "../components/ShowCard";
+import {
+  LocalNotifications,
+  ScheduleOptions,
+} from "@capacitor/local-notifications";
 
 interface Show {
   id: number;
