@@ -63,26 +63,40 @@ const MyShows: React.FC = () => {
           const episodeDate = new Date(episode.airdate);
           return episodeDate.getTime() > currentDate.getTime();
         });
-        const formattedDate = nextEpisode
-          ? new Date(nextEpisode.airdate).toLocaleDateString("en-GB")
-          : "Unknown";
-        show.nextAirdate = formattedDate;
+        if (nextEpisode) {
+          const formattedDate = new Date(
+            nextEpisode.airdate
+          ).toLocaleDateString("en-GB");
+          show.nextAirdate = formattedDate;
 
-        let notificationDate = new Date(show.nextAirdate);
-        notificationDate.setDate(notificationDate.getDate() - 1);
+          let notificationOneDateBefore = new Date(nextEpisode.airdate);
+          notificationOneDateBefore.setDate(
+            notificationOneDateBefore.getDate() - 1
+          );
 
-        LocalNotifications.schedule({
-          notifications: [
-            {
-              title: "Напоминание о серии",
-              body: `Следующий эпизод сериала ${show.name} выйдет завтра!`,
-              id: show.id,
-              schedule: { at: notificationDate },
-            },
-          ],
-        });
+          let notificationDayRelease = new Date(nextEpisode.airdate);
+
+          const notificationDate = new Date();
+          notificationDate.setMilliseconds(
+            notificationDate.getMilliseconds() + 100
+          );
+
+          if (show.nextAirdate != "Unknown") {
+            LocalNotifications.schedule({
+              notifications: [
+                {
+                  title: "Напоминание о серии",
+                  body: `Следующий эпизод сериала ${show.name} выйдет завтра!`,
+                  id: show.id,
+                  schedule: { at: notificationOneDateBefore }, // Use the new notification date
+                },
+              ],
+            });
+          }
+        } else {
+          show.nextAirdate = "Unknown";
+        }
       }
-      console.log(shows);
       setMyShows(shows);
     } catch (error) {
       console.error(error);
