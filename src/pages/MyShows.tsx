@@ -3,7 +3,11 @@ import {
   IonAvatar,
   IonCol,
   IonContent,
+  IonIcon,
   IonItem,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
   IonPage,
   IonRow,
 } from "@ionic/react";
@@ -111,39 +115,64 @@ const MyShows: React.FC = () => {
     return <IonPage>Loading</IonPage>;
   }
 
+  const handleDelete = async (index: number) => {
+    const updatedShows = [...myShows];
+    updatedShows.splice(index, 1);
+    setMyShows(updatedShows);
+
+    await Preferences.set({
+      key: "myShows",
+      value: JSON.stringify(updatedShows),
+    });
+  };
+
   return (
     <IonPage>
       <Search />
       <IonContent>
         <div>
-          {myShows.map((item) => {
+          {myShows.map((item, index) => {
             return (
-              <IonItem
-                key={item.id}
-                className="ion-margin-top ion-margin-end"
-                routerLink={`/shows/${item.id}/episodes`}
-                style={{
-                  borderRadius: "10px",
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                  padding: "10px",
-                }}
-              >
-                <IonRow className="ion-justify-content-between ion-align-items-center">
-                  <IonAvatar className="ion-margin-end">
-                    <img src={item.image.medium} alt="Avatar of Show" />
-                  </IonAvatar>
-                  <IonCol className="ion-align-items-center">
-                    <p style={{ fontSize: 20, margin: 0, marginTop: 20 }}>
-                      {item.name}
-                    </p>
-                    <IonRow>
-                      <p style={{ marginTop: 10 }}>
-                        Next Episode: <strong>{item.nextAirdate}</strong>
+              <IonItemSliding key={item.id}>
+                <IonItem
+                  className="ion-margin-top ion-margin-end"
+                  routerLink={`/shows/${item.id}/episodes`}
+                  lines="none"
+                  style={{
+                    borderRadius: "10px",
+                    boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.1)",
+                    padding: "10px",
+                  }}
+                >
+                  <IonRow className="ion-justify-content-between ion-align-items-center">
+                    <IonAvatar className="ion-margin-end">
+                      <img src={item.image.medium} alt="Avatar of Show" />
+                    </IonAvatar>
+                    <IonCol className="ion-align-items-center">
+                      <p style={{ fontSize: 20, margin: 0, marginTop: 20 }}>
+                        {item.name}
                       </p>
-                    </IonRow>
-                  </IonCol>
-                </IonRow>
-              </IonItem>
+                      <IonRow>
+                        <p style={{ marginTop: 10 }}>
+                          Next Episode: <strong>{item.nextAirdate}</strong>
+                        </p>
+                      </IonRow>
+                    </IonCol>
+                  </IonRow>
+                </IonItem>
+                <IonItemOptions
+                  side="end"
+                  className="ion-align-items-center ion-justify-content-end"
+                >
+                  <IonItemOption
+                    style={{ width: 70, height: "50%", borderRadius: 5 }}
+                    onClick={() => handleDelete(index)}
+                    color="danger"
+                  >
+                    <IonIcon src={trash} />
+                  </IonItemOption>
+                </IonItemOptions>
+              </IonItemSliding>
             );
           })}
         </div>
