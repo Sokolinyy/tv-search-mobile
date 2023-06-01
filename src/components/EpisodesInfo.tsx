@@ -113,7 +113,7 @@ const EpisodesInfo: React.FC = () => {
                     justifyContent: "center",
                   }}
                 >
-                  {episode.airdate}
+                  {new Date(episode.airdate).toLocaleDateString("en-GB")}
                 </IonCol>
               </IonRow>
             ))}
