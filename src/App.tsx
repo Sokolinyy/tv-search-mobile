@@ -10,7 +10,7 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { ellipse, square, triangle } from "ionicons/icons";
+import { ellipse, triangle } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -37,41 +37,43 @@ import "./App.scss";
 import MyShows from "./pages/MyShows";
 import ShowDetails from "./components/ShowDetail";
 import AllTvShows from "./pages/AllTvShows";
-import Search from "./components/Search/Search";
+import { ShowsProvider } from "./Context/ShowsContext";
 
 setupIonicReact();
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/shows">
-            <AllTvShows />
-          </Route>
-          <Route exact path="/shows/:id/episodes">
-            <ShowDetails />
-          </Route>
-          <Route exact path="/myshows">
-            <MyShows />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/shows" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="shows" href="/shows">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>All Shows</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="myshows" href="/myshows">
-            <IonIcon aria-hidden="true" icon={ellipse} />
-            <IonLabel>My Shows</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
+  <ShowsProvider>
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/shows">
+              <AllTvShows />
+            </Route>
+            <Route exact path="/shows/:id/episodes">
+              <ShowDetails />
+            </Route>
+            <Route exact path="/myshows">
+              <MyShows />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/shows" />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="shows" href="/shows">
+              <IonIcon aria-hidden="true" icon={triangle} />
+              <IonLabel>All Shows</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="myshows" href="/myshows">
+              <IonIcon aria-hidden="true" icon={ellipse} />
+              <IonLabel>My Shows</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
+  </ShowsProvider>
 );
 
 export default App;

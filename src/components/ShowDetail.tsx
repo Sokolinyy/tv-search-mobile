@@ -14,15 +14,16 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Search from "./Search/Search";
 import { star } from "ionicons/icons";
 import styles from "./ShowDetail.module.scss";
 import EpisodesInfo from "./EpisodesInfo";
 import { Preferences } from "@capacitor/preferences";
+import { ShowContext } from "../Context/ShowsContext";
 
-interface Show {
+export interface Show {
   id: number;
   image: {
     medium: string;
@@ -38,6 +39,7 @@ interface Show {
   airdate: number;
   status: string;
   genres: [];
+  nextAirdate: string;
 }
 
 const ShowDetails: React.FC = () => {
@@ -45,17 +47,19 @@ const ShowDetails: React.FC = () => {
 
   // Let's say you have a state variable for your data
   const [showData, setShowData] = useState<Show | null>(null);
-
+  const { saveShow } = useContext(ShowContext);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`https://api.tvmaze.com/shows/${id}`);
         const data = response.data;
-        setShowData(data); // assuming setShowData is the function to set your state
+        setShowData(data);
+        saveShow(data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
+
     fetchData();
   }, [id]);
 
@@ -63,16 +67,10 @@ const ShowDetails: React.FC = () => {
     return <IonPage>Loading...</IonPage>;
   }
 
-  const saveShow = async () => {
-    // Get the existing shows
-    const { value } = await Preferences.get({ key: "myShows" });
-    const existingShows = value ? JSON.parse(value) : [];
-
-    // Add the new show
-    const newShows = [...existingShows, showData];
-
-    // Save the updated shows
-    await Preferences.set({ key: "myShows", value: JSON.stringify(newShows) });
+  const addShow = () => {
+    if (showData) {
+      saveShow(showData);
+    }
   };
 
   return (
@@ -106,7 +104,7 @@ const ShowDetails: React.FC = () => {
           </p>
           <IonButton
             style={{ display: "block", margin: "auto" }}
-            onClick={saveShow}
+            onClick={addShow}
           >
             Add to My shows
           </IonButton>

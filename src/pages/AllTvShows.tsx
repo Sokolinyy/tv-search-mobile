@@ -48,7 +48,6 @@ const AllTvShows: React.FC = () => {
     try {
       const response = await axios.get("https://api.tvmaze.com/shows");
       const data = response.data;
-      console.log(data);
       if (data !== undefined) {
         setShows(data);
       }

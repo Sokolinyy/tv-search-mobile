@@ -30,7 +30,6 @@ function Search() {
         `https://api.tvmaze.com/search/shows?q=${searchTerm}`
       );
       const data = response.data;
-      console.log(data);
       if (data !== undefined) {
         setShows(data);
       }

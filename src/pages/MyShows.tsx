@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   IonAvatar,
   IonCol,
@@ -19,8 +19,9 @@ import {
   LocalNotifications,
   ScheduleOptions,
 } from "@capacitor/local-notifications";
+import { ShowContext } from "../Context/ShowsContext";
 
-interface Show {
+export interface Show {
   id: number;
   image: {
     medium: string;
@@ -30,6 +31,12 @@ interface Show {
   rating: {
     average: number;
   };
+  runtime: number;
+  summary: string;
+  number: number;
+  airdate: number;
+  status: string;
+  genres: [];
   nextAirdate: string;
 }
 
@@ -38,14 +45,17 @@ interface Episode {
 }
 
 const MyShows: React.FC = () => {
-  const [myShows, setMyShows] = useState<Show[]>([]);
+  const { myShows, setMyShows } = useContext(ShowContext);
 
   const getShow = async () => {
     // Get the existing shows
     try {
       const { value } = await Preferences.get({ key: "myShows" });
-
-      const shows: Show[] = value ? JSON.parse(value) : [];
+      let shows: Show[] = [];
+      if (value) {
+        shows = JSON.parse(value);
+        console.log(shows);
+      }
 
       for (const show of shows) {
         const response = await axios.get(
