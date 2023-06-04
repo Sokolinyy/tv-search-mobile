@@ -54,7 +54,6 @@ const ShowDetails: React.FC = () => {
         const response = await axios.get(`https://api.tvmaze.com/shows/${id}`);
         const data = response.data;
         setShowData(data);
-        saveShow(data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -68,11 +67,8 @@ const ShowDetails: React.FC = () => {
   }
 
   const addShow = () => {
-    if (showData) {
-      saveShow(showData);
-    }
+    saveShow(showData);
   };
-
   return (
     <>
       <IonPage>

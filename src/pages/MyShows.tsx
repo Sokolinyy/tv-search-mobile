@@ -111,7 +111,12 @@ const MyShows: React.FC = () => {
           show.nextAirdate = "Unknown";
         }
       }
-      setMyShows(shows);
+
+      const isStateChanged = JSON.stringify(myShows) !== JSON.stringify(shows);
+
+      if (isStateChanged) {
+        setMyShows(shows);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -119,7 +124,7 @@ const MyShows: React.FC = () => {
 
   useEffect(() => {
     getShow();
-  }, []);
+  }, [myShows]);
 
   if (myShows === null || myShows === undefined) {
     return <IonPage>Loading</IonPage>;
