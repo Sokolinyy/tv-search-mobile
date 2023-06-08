@@ -54,7 +54,6 @@ const MyShows: React.FC = () => {
       let shows: Show[] = [];
       if (value) {
         shows = JSON.parse(value);
-        console.log(shows);
       }
 
       for (const show of shows) {
@@ -88,13 +87,6 @@ const MyShows: React.FC = () => {
             notificationOneDateBefore.getDate() - 1
           );
 
-          let notificationDayRelease = new Date(nextEpisode.airdate);
-
-          const notificationDate = new Date();
-          notificationDate.setMilliseconds(
-            notificationDate.getMilliseconds() + 100
-          );
-
           if (show.nextAirdate != "Unknown") {
             LocalNotifications.schedule({
               notifications: [
@@ -115,7 +107,7 @@ const MyShows: React.FC = () => {
       const isStateChanged = JSON.stringify(myShows) !== JSON.stringify(shows);
 
       if (isStateChanged) {
-        setMyShows(shows);
+        setMyShows(shows.reverse());
       }
     } catch (error) {
       console.error(error);
